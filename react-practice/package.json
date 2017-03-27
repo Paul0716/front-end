@@ -4,17 +4,23 @@
   "description": "paultaku webpack pracitce project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --hot"
   },
   "author": "paultaku",
   "license": "ISC",
   "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
+    "babel-preset-es2016": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
     "css-loader": "^0.27.3",
     "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "style-loader": "^0.16.0",
     "url-loader": "^0.5.8",
-    "webpack": "^2.3.2"
+    "webpack": "^2.3.2",
+    "webpack-dev-server": "^2.4.2"
   }
 }
