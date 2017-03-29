@@ -1,35 +1,16 @@
 import React from 'react';
+import { Button, Nav, NavItem } from 'react-bootstrap';
 
 class App extends React.Component {
-   render() {
-      return (
-         <div>
-            <Header/>
-            <Content/>
-         </div>
-      );
-   }
-}
 
-class Header extends React.Component {
-   render() {
-      return (
-         <div>
-            <h1>Header</h1>
-         </div>
-      );
-   }
+    render() {
+        return (
+            <Nav bsStyle="tabs" activeKey="1" onSelect={this.handleSelect}>
+                <NavItem eventKey="1" href="/home">NavItem 1 content</NavItem>
+                <NavItem eventKey="2" title="Item">NavItem 2 content</NavItem>
+                <NavItem eventKey="3">NavItem 3 content</NavItem>
+            </Nav>
+        );
+    }
 }
-
-class Content extends React.Component {
-   render() {
-      return (
-         <div>
-            <h2>Content</h2>
-            <p>The content text!!!</p>
-         </div>
-      );
-   }
-}
-
 export default App;
