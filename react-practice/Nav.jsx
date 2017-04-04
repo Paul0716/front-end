@@ -6,8 +6,8 @@ class MainNav extends React.Component {
     render() {
         return (
             <Nav bsStyle="tabs" activeKey="1" onSelect={this.handleSelect}>
-                <NavItem>NavItem 1 content</NavItem>
-                <NavItem>NavItem 2 content</NavItem>
+                <NavItem>首頁</NavItem>
+                <NavItem>關於本網站</NavItem>
             </Nav>
         );
     }

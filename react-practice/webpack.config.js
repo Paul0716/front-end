@@ -2,10 +2,10 @@ var webpack = require("webpack");
 var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 module.exports = {
    entry: {
-       bundle: './main.jsx'
+       main: './main.jsx'
    },
    output: {
-      filename: './[name].js',
+      filename: './assets/js/[name].js',
    },
    devServer: {
       inline: true,
@@ -34,4 +34,11 @@ module.exports = {
    resolve: {
         extensions: ['.js','.jsx','.json']
    },
+   plugins: [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+   ]
+
 };
