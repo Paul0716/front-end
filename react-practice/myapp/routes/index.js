@@ -1,16 +1,24 @@
-var express = require('express');
-var router = express.Router();
-
+const express = require('express');
+const router = express.Router();
+const q = require('q');
 const request = require("request");
+const rp = require("request-promise");
 const cheerio = require("cheerio");
 const _ = require("lodash");
 
 function postProductDetail(url){
-    request(url, function(error, response, body){
-        if (!error && response.statusCode == 200) {
-            var $ = cheerio.load(body)
+    var deferred = q.defer();
+    var options = {
+        method: "GET",
+        uri: url,
+        json:true,
+        transform: function (body) {
+            return cheerio.load(body);
+        }
+    }
+    rp(options)
+        .then(function ($) {
             var options = [];
-
             var title 			= $("title").text().split("|")[0].trim();
             var serial_number 	= "#"+$(".item-number",".product-name").text().trim().split("#")[1];
             var $price_sections = $(".price-sections");
@@ -23,33 +31,38 @@ function postProductDetail(url){
                 var text = $(opt).text();
                 options.push( text );	
             });
-            
 
-
-            console.log("title: "+ title);
-            console.log("serial number: "+serial_number);
-            console.log("origin price: "+origin_price);
-            console.log("discount: "+discount_value);
-            console.log("pay: "+ you_pay_value);
-            console.log("min qty: "+min_qty);
-            _.forEach(options, function(option){
-                console.log("option:"+option);
-            });
-            
-
-        }
-    });
+            var data = {
+                title: title,
+                serial_number: serial_number,
+                origin_price: origin_price,
+                discount: discount_value,
+                pay: you_pay_value,
+                min_qty: min_qty,
+                options: options
+            };
+            deferred.resolve(data);
+        })
+        .catch(function (err) {
+            throw err;
+        });
+        return deferred.promise;
 }
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  
   res.render('index', { title: 'Express' });
 });
 router.post('/cosco', function(req, res, next) {  
-  var url = req.body.url;
-  postProductDetail(url);
+    var url = req.body.url;
+    postProductDetail(url)
+        .then(function(data){
+            console.log(data);
+            res.json({
+                data: data,
+            });
+            res.send();
+            res.end();
+        });
 });
-
-
 module.exports = router;

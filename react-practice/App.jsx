@@ -1,10 +1,13 @@
 import React from 'react';
 import { Well, Button, Nav, NavItem, FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
+import List from './List.jsx';
 
 const App = React.createClass ({
     getInitialState() {
         return {
           url: 'https://www.costco.com.tw/Computers-%26-Office/Laptops/HP-13-3%22-ENVY-NB-13-ab041TU/p/113967',
+          list: [
+          ],
         };
     },
     getValidationState() {
@@ -23,6 +26,7 @@ const App = React.createClass ({
         this.setState({ url: e.target.value });
     },
     getProductDetail(){
+        var self = this;
         $.ajax({
             type: 'post',
             url: 'http://localhost:3000/cosco/',
@@ -32,11 +36,12 @@ const App = React.createClass ({
             crossDomain: true,
             dataType: 'json',
         })
-        .done(function(data) {
-            self.clearForm()
+        .done(function(response) {
+            self.state.list.push(response.data);
+            self.forceUpdate();
         })
         .fail(function(jqXhr) {
-            console.log('failed to register');
+            console.error(jqXhr);
         });
     },
     formSubmit(e){
@@ -44,28 +49,31 @@ const App = React.createClass ({
     },
     render() {
         return (
-            <Well bsSize="sm">
-                <form>
-                    <FormGroup
-                        bsSize="sm"
-                        controlId="formBasicText"
-                        validationState={this.getValidationState()}
-                    >
-                        <ControlLabel>連結網址:</ControlLabel>
-                        <FormControl
-                            type="text"
-                            value={this.state.url}
-                            placeholder="請輸入商品網址連結"
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <Button
-                        type="button"
-                        bsStyle="primary"
-                        onClick={this.formSubmit}
-                    >提交</Button>
-                </form>
-            </Well>
+            <div className="row">
+                <Well bsSize="sm">
+                    <form>
+                        <FormGroup
+                            bsSize="sm"
+                            controlId="formBasicText"
+                            validationState={this.getValidationState()}
+                        >
+                            <ControlLabel>連結網址:</ControlLabel>
+                            <FormControl
+                                type="text"
+                                value={this.state.url}
+                                placeholder="請輸入商品網址連結"
+                                onChange={this.handleChange}
+                            />
+                        </FormGroup>
+                        <Button
+                            type="button"
+                            bsStyle="primary"
+                            onClick={this.formSubmit}
+                        >提交</Button>
+                    </form>
+                </Well>
+                <List data={this.state.list}/>
+            </div>
         );
     }
 });
