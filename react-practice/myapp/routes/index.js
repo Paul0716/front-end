@@ -19,6 +19,7 @@ function postProductDetail(url){
     rp(options)
         .then(function ($) {
             var options = [];
+            var thumb           = $(".thumb > img").attr("src");
             var title 			= $("title").text().split("|")[0].trim();
             var serial_number 	= "#"+$(".item-number",".product-name").text().trim().split("#")[1];
             var $price_sections = $(".price-sections");
@@ -33,6 +34,7 @@ function postProductDetail(url){
             });
 
             var data = {
+                thumb: thumb,
                 title: title,
                 serial_number: serial_number,
                 origin_price: origin_price,

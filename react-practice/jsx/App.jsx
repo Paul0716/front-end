@@ -13,7 +13,6 @@ const App = React.createClass ({
     getValidationState() {
         var pattern = /^(https?:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/i; // fragment locater
         if(this.state.url !== ""){
-            console.log(pattern.test( this.state.url));
             if(!pattern.test( this.state.url)) {
                 return "error";
             } else {

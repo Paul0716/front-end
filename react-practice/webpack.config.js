@@ -1,11 +1,15 @@
 var webpack = require("webpack");
 var uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+var PROD = JSON.parse(process.env.PROD_ENV || '0');
+console.log("production: ", PROD);
 module.exports = {
    entry: {
-       main: './main.jsx'
+       main: './jsx/main.jsx',
+       register: './jsx/register.jsx',
+       login: './jsx/login.jsx',
    },
    output: {
-      filename: './assets/js/[name].js',
+      filename: PROD ? './assets/js/[name].min.js' : './assets/js/[name].js',
    },
    devServer: {
       inline: true,
@@ -34,11 +38,18 @@ module.exports = {
    resolve: {
         extensions: ['.js','.jsx','.json']
    },
-   plugins: [
+   plugins: PROD ? [
+        new webpack.optimize.UglifyJsPlugin({
+            compress: { warnings: false }
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
         })
-   ]
-
+    ] : [
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+        })
+    ]
 };
